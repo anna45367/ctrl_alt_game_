@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа | Ctrl Alt Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --secondary: #00ff00;
+            --secondary-dark: #00cc00;
+            --dark: #121212;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --accent: #ff5500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links li {
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--light);
+            padding: 3rem 1rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40vh;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #ff4500;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .copyright {
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                flex-direction: row;
+                padding: 0;
+            }
+
+            .nav-links li {
+                width: auto;
+                margin: 0 0.5rem;
+            }
+
+            .nav-links a {
+                padding: 0.5rem 1rem;
+            }
+
+            .nav-links a:hover {
+                background-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Ctrl Alt Game</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> Блог</a></li>
+                    <li><a href="catalog.html"><i class="fas fa-list"></i> Каталог</a></li>
+                    <li><a href="filters.html"><i class="fas fa-filter"></i> Фильтры</a></li>
+                    <li><a href="delivery.html"><i class="fas fa-truck"></i> Доставка</a></li>
+                    <li><a href="favorites.html"><i class="fas fa-heart"></i> Избранное</a></li>
+                    <li><a href="card.html"><i class="fas fa-shopping-cart"></i> Корзина</a></li>
+                    <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Войти</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Оформление заказа</h1>
+        </section>
+
+        <div class="form-container">
+            <form>
+                <div class="form-group">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Адрес:</label>
+                    <input type="text" id="address" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Телефон:</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Электронная почта:</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="delivery">Способ доставки:</label>
+                    <select id="delivery" class="form-control" required>
+                        <option value="standard">Стандартная доставка (3-5 дней, 300 руб.)</option>
+                        <option value="express">Экспресс доставка (1-2 дня, 600 руб.)</option>
+                        <option value="pickup">Самовывоз (бесплатно)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment">Способ оплаты:</label>
+                    <select id="payment" class="form-control" required>
+                        <option value="card">Карта</option>
+                        <option value="cash">Наложенный платеж</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Оформить заказ</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="copyright">
+            <p>&copy; 2025 Ctrl Alt Game. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Маска для телефона
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+        });
+
+    </script>
+</body>
+</html>

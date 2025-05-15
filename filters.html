@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фильтры | Ctrl Alt Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --secondary: #00ff00;
+            --secondary-dark: #00cc00;
+            --dark: #121212;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --accent: #ff5500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .logo span {
+            display: none;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links li {
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .nav-links i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--light);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--light);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ff4500;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--light);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Фильтры */
+        .filters-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .filter-sidebar {
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .filter-title i {
+            transition: transform 0.3s ease;
+        }
+
+        .filter-title.collapsed i {
+            transform: rotate(-90deg);
+        }
+
+        .filter-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .filter-option input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            user-select: none;
+            flex-grow: 1;
+        }
+
+        .filter-option-count {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .price-slider {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .price-slider .progress {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 5px;
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        .range-input {
+            position: relative;
+        }
+
+        .range-input input {
+            position: absolute;
+            top: -5px;
+            height: 5px;
+            width: 100%;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            height: 17px;
+            width: 17px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            height: 17px;
+            width: 17px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Результаты фильтрации */
+        .filter-results {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sort-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sort-label {
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        .sort-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: var(--light);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .sort-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .sort-btn.active {
+            background-color: var(--accent);
+            color: var(--light);
+            border-color: var(--accent);
+        }
+
+        .results-count {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .card {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem;
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card-link:hover .card {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .card-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-old-price {
+            text-decoration: line-through;
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-left: 0.5rem;
+        }
+
+        .card-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-buttons .btn {
+            flex: 1;
+            max-width: 120px;
+            padding: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .page-btn.active {
+            background-color: var(--accent);
+            color: var(--light);
+            border-color: var(--accent);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 3rem 2rem;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-about p {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-contact i {
+            color: var(--secondary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Десктопные стили */
+        @media (min-width: 768px) {
+            .logo span {
+                display: inline;
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                flex-direction: row;
+                padding: 0;
+                background-color: transparent;
+            }
+            
+            .nav-links li {
+                width: auto;
+                margin: 0 0.5rem;
+            }
+            
+            .nav-links a {
+                padding: 0.5rem 1rem;
+            }
+            
+            .nav-links a:hover {
+                background-color: transparent;
+            }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .filters-container {
+                grid-template-columns: 250px 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .card-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .sort-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Ctrl Alt Game</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> <span>Блог</span></a></li>
+                    <li><a href="catalog.html"><i class="fas fa-list"></i> <span>Каталог</span></a></li>
+                    <li><a href="filters.html"><i class="fas fa-filter"></i> <span>Фильтры</span></a></li>
+                    <li><a href="delivery.html"><i class="fas fa-truck"></i> <span>Доставка</span></a></li>
+                    <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Избранное</span></a></li>
+                    <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Корзина</span></a></li>
+                    <li><a href="account.html"><i class="fas fa-user"></i> <span>Кабинет</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Расширенные фильтры</h1>
+                <p>Найдите именно то, что вам нужно, с помощью наших мощных фильтров</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="filters-container">
+                <aside class="filter-sidebar">
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <h3>Категории</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="category-keyboards" checked>
+                                <label for="category-keyboards">Клавиатуры</label>
+                                <span class="filter-option-count">(42)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="category-mice" checked>
+                                <label for="category-mice">Мыши</label>
+                                <span class="filter-option-count">(36)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="category-headsets" checked>
+                                <label for="category-headsets">Гарнитуры</label>
+                                <span class="filter-option-count">(28)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="category-monitors" checked>
+                                <label for="category-monitors">Мониторы</label>
+                                <span class="filter-option-count">(15)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="category-mousepads" checked>
+                                <label for="category-mousepads">Коврики</label>
+                                <span class="filter-option-count">(12)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <h3>Цена</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="price-range">
+                            <input type="number" class="price-input" id="minPrice" placeholder="От" min="0" max="50000" value="0">
+                            <input type="number" class="price-input" id="maxPrice" placeholder="До" min="0" max="50000" value="50000">
+                        </div>
+                        <div class="price-slider">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="range-input">
+                            <input type="range" class="range-min" min="0" max="50000" value="0" step="100">
+                            <input type="range" class="range-max" min="0" max="50000" value="50000" step="100">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <h3>Бренды</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-razer" checked>
+                                <label for="brand-razer">Razer</label>
+                                <span class="filter-option-count">(32)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-logitech" checked>
+                                <label for="brand-logitech">Logitech</label>
+                                <span class="filter-option-count">(25)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-corsair" checked>
+                                <label for="brand-corsair">Corsair</label>
+                                <span class="filter-option-count">(18)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-steelseries" checked>
+                                <label for="brand-steelseries">SteelSeries</label>
+                                <span class="filter-option-count">(15)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="brand-asus" checked>
+                                <label for="brand-asus">ASUS</label>
+                                <span class="filter-option-count">(12)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-title collapsed">
+                            <h3>Тип переключателей</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="filter-options" style="display: none;">
+                            <div class="filter-option">
+                                <input type="checkbox" id="switch-red">
+                                <label for="switch-red">Красные (линейные)</label>
+                                <span class="filter-option-count">(14)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="switch-blue">
+                                <label for="switch-blue">Синие (клик)</label>
+                                <span class="filter-option-count">(12)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="switch-brown">
+                                <label for="switch-brown">Коричневые (тактильные)</label>
+                                <span class="filter-option-count">(10)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="switch-speed">
+                                <label for="switch-speed">Скоростные</label>
+                                <span class="filter-option-count">(8)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-title collapsed">
+                            <h3>DPI мыши</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="filter-options" style="display: none;">
+                            <div class="filter-option">
+                                <input type="checkbox" id="dpi-6400">
+                                <label for="dpi-6400">До 6400</label>
+                                <span class="filter-option-count">(8)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="dpi-16000">
+                                <label for="dpi-16000">До 16000</label>
+                                <span class="filter-option-count">(15)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="dpi-20000">
+                                <label for="dpi-20000">20000+</label>
+                                <span class="filter-option-count">(13)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Применить фильтры</button>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem;">Сбросить</button>
+                </aside>
+                
+                <div class="filter-results">
+                    <div class="sort-options">
+                        <span class="sort-label">Сортировка:</span>
+                        <button class="sort-btn active">По популярности</button>
+                        <button class="sort-btn">По цене ↑</button>
+                        <button class="sort-btn">По цене ↓</button>
+                        <button class="sort-btn">По новизне</button>
+                        <button class="sort-btn">По отзывам</button>
+                    </div>
+                    
+                    <div class="results-count">Найдено 124 товара</div>
+                    
+                    <div class="products">
+                        <!-- Товар 1 -->
+                        <a href="product.html?id=1" class="card-link">
+                            <div class="card" data-brand="razer" data-price="12990" data-category="keyboards">
+                                <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Клавиатура Razer BlackWidow" class="card-img">
+                                <div class="card-content">
+                                    <h3>Razer BlackWidow V3</h3>
+                                    <p>Механическая игровая клавиатура с зелеными переключателями</p>
+                                    <span class="card-price">12 990 ₽ <span class="card-old-price">14 990 ₽</span></span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Товар 2 -->
+                        <a href="product.html?id=2" class="card-link">
+                            <div class="card" data-brand="razer" data-price="9990" data-category="mice">
+                                <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Мышь Razer Viper" class="card-img">
+                                <div class="card-content">
+                                    <h3>Razer Viper Ultimate</h3>
+                                    <p>Беспроводная игровая мышь с сенсором 20000 DPI</p>
+                                    <span class="card-price">9 990 ₽</span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Товар 3 -->
+                        <a href="product.html?id=3" class="card-link">
+                            <div class="card" data-brand="steelseries" data-price="14990" data-category="headsets">
+                                <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Гарнитура SteelSeries Arctis" class="card-img">
+                                <div class="card-content">
+                                    <h3>SteelSeries Arctis 7</h3>
+                                    <p>Беспроводная игровая гарнитура с микрофоном</p>
+                                    <span class="card-price">14 990 ₽ <span class="card-old-price">16 990 ₽</span></span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Товар 4 -->
+                        <a href="product.html?id=4" class="card-link">
+                            <div class="card" data-brand="asus" data-price="54990" data-category="monitors">
+                                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Монитор ASUS ROG" class="card-img">
+                                <div class="card-content">
+                                    <h3>ASUS ROG Swift PG279Q</h3>
+                                    <p>27" WQHD 165Hz IPS G-Sync монитор</p>
+                                    <span class="card-price">54 990 ₽</span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Товар 5 -->
+                        <a href="product.html?id=5" class="card-link">
+                            <div class="card" data-brand="logitech" data-price="11990" data-category="keyboards">
+                                <img src="https://images.unsplash.com/photo-1592155931584-901ac15763e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Клавиатура Logitech G Pro" class="card-img">
+                                <div class="card-content">
+                                    <h3>Logitech G Pro X</h3>
+                                    <p>Механическая клавиатура с заменяемыми переключателями</p>
+                                    <span class="card-price">11 990 ₽</span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Товар 6 -->
+                        <a href="product.html?id=6" class="card-link">
+                            <div class="card" data-brand="logitech" data-price="6490" data-category="mice">
+                                <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Мышь Logitech G502" class="card-img">
+                                <div class="card-content">
+                                    <h3>Logitech G502 Hero</h3>
+                                    <p>Игровая мышь с 11 программируемыми кнопками</p>
+                                    <span class="card-price">6 490 ₽ <span class="card-old-price">7 990 ₽</span></span>
+                                    <div class="card-buttons">
+                                        <button class="btn">В корзину</button>
+                                        <button class="btn btn-secondary">Подробнее</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="page-btn disabled"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">Ctrl Alt Game</div>
+                <p>Интернет-магазин игровых комплектующих и аксессуаров. Мы предлагаем только качественную продукцию от ведущих мировых производителей.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="ВКонтакте"><i class="fab fa-vk"></i                    <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Каталог</h3>
+                <ul>
+                    <li><a href="#">Игровые мыши</a></li>
+                    <li><a href="#">Клавиатуры</a></li>
+                    <li><a href="#">Мониторы</a></li>
+                    <li><a href="#">Видеокарты</a></li>
+                    <li><a href="#">Процессоры</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Гарантия</a></li>
+                    <li><a href="#">Отзывы</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Контакты</h3>
+                <p><i class="fas fa-phone-alt"></i> +7 (962) 858-83-62</p>
+                <p><i class="fas fa-envelope"></i> info@ctrlaltgame.ru</p>
+                <p><i class="fas fa-map-marker-alt"></i> Станица Ленинградская, ул. Красная, 152</p>
+                <p><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 21:00</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Ctrl Alt Game. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Фильтры - сворачивание/разворачивание групп
+        document.querySelectorAll('.filter-title').forEach(title => {
+            title.addEventListener('click', () => {
+                title.classList.toggle('collapsed');
+                const options = title.nextElementSibling;
+                if (options.style.display === 'none') {
+                    options.style.display = 'grid';
+                } else {
+                    options.style.display = 'none';
+                }
+            });
+        });
+
+        // Сортировка - активная кнопка
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.sort-btn.active').classList.remove('active');
+                btn.classList.add('active');
+            });
+        });
+
+        // Пагинация - активная кнопка
+        document.querySelectorAll('.page-btn:not(.disabled)').forEach(btn => {
+            if (!btn.classList.contains('active') && !btn.querySelector('i')) {
+                btn.addEventListener('click', () => {
+                    document.querySelector('.page-btn.active').classList.remove('active');
+                    btn.classList.add('active');
+                });
+            }
+        });
+
+        // Фильтр по цене
+        const rangeInput = document.querySelectorAll(".range-input input"),
+              priceInput = document.querySelectorAll(".price-input input"),
+              progress = document.querySelector(".price-slider .progress");
+        
+        let priceGap = 5000;
+
+        priceInput.forEach(input => {
+            input.addEventListener("input", e => {
+                let minVal = parseInt(priceInput[0].value),
+                    maxVal = parseInt(priceInput[1].value);
+                
+                if ((maxVal - minVal >= priceGap) && maxVal <= 50000) {
+                    if (e.target.className === "price-input min") {
+                        rangeInput[0].value = minVal;
+                        progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                    } else {
+                        rangeInput[1].value = maxVal;
+                        progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                    }
+                }
+            });
+        });
+
+        rangeInput.forEach(input => {
+            input.addEventListener("input", e => {
+                let minVal = parseInt(rangeInput[0].value),
+                    maxVal = parseInt(rangeInput[1].value);
+                
+                if (maxVal - minVal < priceGap) {
+                    if (e.target.className === "range-min") {
+                        rangeInput[0].value = maxVal - priceGap;
+                    } else {
+                        rangeInput[1].value = minVal + priceGap;
+                    }
+                } else {
+                    priceInput[0].value = minVal;
+                    priceInput[1].value = maxVal;
+                    progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+                    progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+                }
+            });
+        });
+
+        // Фильтрация товаров
+        document.querySelector('.btn').addEventListener('click', function() {
+            const selectedCategories = [];
+            document.querySelectorAll('#category-keyboards, #category-mice, #category-headsets, #category-monitors, #category-mousepads').forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedCategories.push(checkbox.id.replace('category-', ''));
+                }
+            });
+
+            const selectedBrands = [];
+            document.querySelectorAll('#brand-razer, #brand-logitech, #brand-corsair, #brand-steelseries, #brand-asus').forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedBrands.push(checkbox.id.replace('brand-', ''));
+                }
+            });
+
+            const minPrice = parseInt(document.getElementById('minPrice').value);
+            const maxPrice = parseInt(document.getElementById('maxPrice').value);
+
+            const products = document.querySelectorAll('.card');
+            let visibleCount = 0;
+
+            products.forEach(product => {
+                const productCategory = product.getAttribute('data-category');
+                const productBrand = product.getAttribute('data-brand');
+                const productPrice = parseInt(product.getAttribute('data-price'));
+
+                const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(productCategory);
+                const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(productBrand);
+                const priceMatch = productPrice >= minPrice && productPrice <= maxPrice;
+
+                if (categoryMatch && brandMatch && priceMatch) {
+                    product.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            document.querySelector('.results-count').textContent = `Найдено ${visibleCount} товаров`;
+        });
+
+        // Сброс фильтров
+        document.querySelector('.btn-secondary').addEventListener('click', function() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+
+            document.getElementById('minPrice').value = 0;
+            document.getElementById('maxPrice').value = 50000;
+
+            document.querySelector('.range-min').value = 0;
+            document.querySelector('.range-max').value = 50000;
+            document.querySelector('.progress').style.left = "0%";
+            document.querySelector('.progress').style.right = "0%";
+
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.display = 'block';
+            });
+
+            document.querySelector('.results-count').textContent = 'Найдено 124 товара';
+        });
+
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.card');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

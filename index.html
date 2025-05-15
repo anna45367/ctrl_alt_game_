@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ctrl Alt Game | Магазин игровых комплектующих</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --secondary: #00ff00;
+            --secondary-dark: #00cc00;
+            --dark: #121212;
+            --light: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --accent: #ff5500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .logo span {
+            display: none; /* Скрываем текст логотипа на мобильных */
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links li {
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .nav-links i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--light);
+            padding: 3rem 1rem;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #ff4500;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--light);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .section {
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .card-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-old-price {
+            text-decoration: line-through;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        .features {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .features-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            padding: 1.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .newsletter {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--accent);
+            color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-about p {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 0.3rem 0;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-contact i {
+            color: var(--secondary);
+            min-width: 20px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        /* Стили для корзины */
+        .cart-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .cart-items {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            color: var(--accent);
+        }
+
+        .cart-summary {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+        }
+
+        .total-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .checkout-form {
+            margin-top: 2rem;
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Десктопные стили */
+        @media (min-width: 768px) {
+            .logo span {
+                display: inline; /* Показываем текст логотипа на десктопе */
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                flex-direction: row;
+                padding: 0;
+                background-color: transparent;
+            }
+            
+            .nav-links li {
+                width: auto;
+                margin: 0 0.5rem;
+            }
+            
+            .nav-links a {
+                padding: 0.5rem 1rem;
+            }
+            
+            .nav-links a:hover {
+                background-color: transparent;
+            }
+            
+            .hero {
+                padding: 5rem 2rem;
+                min-height: 70vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .btn-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .section {
+                padding: 3rem 2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .features-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .newsletter-form {
+                flex-direction: row;
+            }
+            
+            .newsletter-form input {
+                border-radius: 50px 0 0 50px;
+                margin-bottom: 0;
+            }
+            
+            .newsletter-form button {
+                border-radius: 0 50px 50px 0;
+                width: auto;
+            }
+
+            .cart-container {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 2rem;
+                align-items: start;
+            }
+            
+            .cart-summary {
+                margin-top: 0;
+                position: sticky;
+                top: 1rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .features-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Ctrl Alt Game</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> <span>Блог</span></a></li>
+                    <li><a href="catalog.html"><i class="fas fa-list"></i> <span>Каталог</span></a></li>
+                    <li><a href="filters.html"><i class="fas fa-filter"></i> <span>Фильтры</span></a></li>
+                    <li><a href="delivery.html"><i class="fas fa-truck"></i> <span>Доставка</span></a></li>
+                    <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Избранное</span></a></li>
+                    <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Корзина</span></a></li>
+                    <li><a href="account.html"><i class="fas fa-user"></i> <span>Войти</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Максимальная производительность для ваших игр</h1>
+                <p>Лучшие игровые комплектующие и аксессуары по выгодным ценам</p>
+                <div class="btn-group">
+                    <a href="#promotions" class="btn pulse">Акции и скидки</a>
+                    <a href="#new" class="btn btn-secondary">Новинки</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-container">
+                <div class="feature">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставка по всей России за 1-3 дня</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Гарантия качества</h3>
+                    <p>Официальная гарантия на все товары</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-headset"></i>
+                    <h3>Поддержка 24/7</h3>
+                    <p>Наши специалисты всегда на связи</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-percentage"></i>
+                    <h3>Выгодные цены</h3>
+                    <p>Регулярные акции и специальные предложения</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="promotions">
+            <div class="section-title">
+                <h2>Горячие акции</h2>
+            </div>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Скидка на клавиатуры" class="card-img">
+                    <div class="card-content">
+                        <h3>Скидка 20% на клавиатуры</h3>
+                        <p>Только в этом месяце скидка на все игровые клавиатуры</p>
+                        <span class="card-price">от 3 990 ₽ <span class="card-old-price">4 990 ₽</span></span>
+                        <a href="#" class="btn">Купить со скидкой</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Мышь в подарок" class="card-img">
+                    <div class="card-content">
+                        <h3>Купи монитор - получи мышь</h3>
+                        <p>При покупке любого игрового монитора получите мышь в подарок</p>
+                        <span class="card-price">от 14 990 ₽</span>
+                        <a href="#" class="btn">Выбрать монитор</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Комплект геймера" class="card-img">
+                    <div class="card-content">
+                        <h3>Комплект геймера</h3>
+                        <p>Клавиатура + мышь + коврик всего за 7 990 ₽ вместо 10 990 ₽</p>
+                        <span class="card-price">7 990 ₽ <span class="card-old-price">10 990 ₽</span></span>
+                        <a href="#" class="btn">Собрать комплект</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="new">
+            <div class="section-title">
+                <h2>Новинки</h2>
+            </div>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Игровой монитор" class="card-img">
+                    <div class="card-content">
+                        <h3>Игровой монитор ASUS ROG</h3>
+                        <p>27" QHD 165Hz, 1ms, HDR, G-Sync Compatible</p>
+                        <span class="card-price">34 990 ₽</span>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Игровая мышь" class="card-img">
+                    <div class="card-content">
+                        <h3>Игровая мышь Razer Viper</h3>
+                        <p>Оптический сенсор 16000 DPI, 6 кнопок, RGB подсветка</p>
+                        <span class="card-price">5 490 ₽</span>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://avatars.mds.yandex.net/get-goods_pic/10849913/hat6eba698e3166425b5b07717b75f95557/600x600" alt="Игровая клавиатура" class="card-img">
+                    <div class="card-content">
+                        <h3>Клавиатура Razer BlackWidow</h3>
+                        <p>Механическая, зеленые переключатели Razer, RGB</p>
+                        <span class="card-price">12 990 ₽</span>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="newsletter-container">
+                <h2>Подпишитесь на рассылку</h2>
+                <p>Получайте первыми информацию о новых поступлениях, эксклюзивных предложениях и специальных акциях</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Ваш email" required>
+                    <button type="submit">Подписаться</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Ctrl Alt Game</span>
+                </div>
+                <p>Интернет-магазин игровых комплектующих и аксессуаров. Мы предлагаем только качественную продукцию от ведущих мировых производителей.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="ВКонтакте"><i class="fab fa-vk"></i></a>
+                    <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Каталог</h3>
+                <ul>
+                    <li><a href="#">Игровые мыши</a></li>
+                    <li><a href="#">Клавиатуры</a></li>
+                    <li><a href="#">Мониторы</a></li>
+                    <li><a href="#">Видеокарты</a></li>
+                    <li><a href="#">Процессоры</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Гарантия</a></li>
+                    <li><a href="#">Отзывы</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Контакты</h3>
+                <p><i class="fas fa-phone-alt"></i> +7 (962) 858-83-62</p>
+                <p><i class="fas fa-envelope"></i> info@ctrlaltgame.ru</p>
+                <p><i class="fas fa-map-marker-alt"></i> Станица Ленинградская, ул. Красная, 152</p>
+                <p><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 21:00</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Ctrl Alt Game. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Мобильное меню
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Ленивая загрузка изображений
+        if ('loading' in HTMLImageElement.prototype) {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            images.forEach(img => {
+                img.loading = 'lazy';
+            });
+        } else {
+            // Fallback для старых браузеров
+            const lazyScript = document.createElement('script');
+            lazyScript.src = 'https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js';
+            document.body.appendChild(lazyScript);
+            
+            lazyScript.onload = () => {
+                const observer = lozad();
+                observer.observe();
+            };
+        }
+
+        // Анимация элементов при скролле
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.card, .feature, .section-title');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        };
+
+        // Запуск анимации после загрузки страницы
+        document.addEventListener('DOMContentLoaded', animateOnScroll);
+    </script>
+</body>
+</html>

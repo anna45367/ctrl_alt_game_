@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Каталог - Ctrl Alt Game | Магазин игровых комплектующих</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+  :root {
+    --primary: #0066cc;
+    --primary-dark: #004d99;
+    --secondary: #00ff00;
+    --secondary-dark: #00cc00;
+    --dark: #121212;
+    --light: #ffffff;
+    --gray: #f5f5f5;
+    --dark-gray: #333333;
+    --accent: #ff5500;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--gray);
+    color: var(--dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .navbar {
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .logo i {
+    color: var(--accent);
+    font-size: 1.8rem;
+  }
+  .logo span {
+    display: none; /* Скрываем текст логотипа на мобильных */
+  }
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background-color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+  .nav-links.active {
+    left: 0;
+  }
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+  .nav-links a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+    padding: 1rem;
+    transition: all 0.3s ease;
+  }
+  .nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--secondary);
+  }
+  .nav-links i {
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+  }
+  .mobile-menu-btn {
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block;
+  }
+  .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      url('https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    color: var(--light);
+    padding: 3rem 1rem;
+    text-align: center;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeInUp 1s ease;
+  }
+  .hero h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  .btn {
+    display: inline-block;
+    background-color: var(--accent);
+    color: var(--light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+  .btn:hover {
+    background-color: #ff4500;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  .btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--light);
+  }
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .section {
+    padding: 2rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .section-title h2 {
+    font-size: 1.8rem;
+    color: var(--dark);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+  .section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent);
+    border-radius: 2px;
+  }
+  /* Фильтры */
+  .filters {
+    background-color: var(--light);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+  }
+  .filter-group {
+    margin-bottom: 1.5rem;
+  }
+  .filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  .filter-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--light);
+    transition: all 0.3s ease;
+  }
+  .filter-group select:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 85, 0, 0.2);
+  }
+  /* Карточки товаров */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  /* Обертка карточек для перехода */
+  .card-link {
+    display: block;
+    text-decoration: none;
+  }
+  /* Карточка товара */
+  .card {
+    background-color: var(--light);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s, transform 0.3s;
+  }
+  /* Эффект при наведении */
+  .card-link:hover .card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  /* Изображение */
+  .card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+  }
+  .card p {
+    color: var(--dark-gray);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  .card-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .card-old-price {
+    text-decoration: line-through;
+    color: var(--dark-gray);
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+  /* Центрированные кнопки */
+  .card-buttons {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  /* Кнопки внутри карточки */
+  .card-buttons .btn {
+    flex: 1;
+    max-width: 120px;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  /* Футер */
+  footer {
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 3rem 2rem;
+  }
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+  }
+  .footer-about p {
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+  }
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--light);
+    transition: all 0.3s ease;
+  }
+  .social-links a:hover {
+    background-color: var(--accent);
+    transform: translateY(-3px);
+  }
+  .footer-links h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--secondary);
+  }
+  .footer-links ul {
+    list-style: none;
+  }
+  .footer-links li {
+    margin-bottom: 0.8rem;
+  }
+  .footer-links a {
+    color: var(--light);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+  }
+  .footer-links a:hover {
+    opacity: 1;
+    color: var(--secondary);
+    padding-left: 5px;
+  }
+  .footer-contact p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  .footer-contact i {
+    color: var(--secondary);
+  }
+  .copyright {
+    text-align: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.7;
+  }
+  /* Анимации */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Десктопные стили */
+  @media (min-width: 768px) {
+    .logo span {
+      display: inline; /* Показываем текст логотипа на десктопе */
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+    }
+    
+    .nav-links {
+      position: static;
+      width: auto;
+      height: auto;
+      flex-direction: row;
+      padding: 0;
+      background-color: transparent;
+    }
+    
+    .nav-links li {
+      width: auto;
+      margin: 0 0.5rem;
+    }
+    
+    .nav-links a {
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-links a:hover {
+      background-color: transparent;
+    }
+    
+    .hero {
+      padding: 5rem 2rem;
+      min-height: 70vh;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero p {
+      font-size: 1.1rem;
+    }
+    
+    .section {
+      padding: 3rem 2rem;
+    }
+  }
+  @media (max-width: 576px) {
+    .card-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-gamepad"></i>
+        <span>Ctrl Alt Game</span>
+      </a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+        <li><a href="blog.html"><i class="fas fa-blog"></i> <span>Блог</span></a></li>
+        <li><a href="catalog.html"><i class="fas fa-list"></i> <span>Каталог</span></a></li>
+        <li><a href="filters.html"><i class="fas fa-filter"></i> <span>Фильтры</span></a></li>
+        <li><a href="delivery.html"><i class="fas fa-truck"></i> <span>Доставка</span></a></li>
+        <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Избранное</span></a></li>
+        <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Корзина</span></a></li>
+        <li><a href="account.html"><i class="fas fa-user"></i> <span>Войти</span></a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Каталог товаров</h1>
+      <p>Лучшие игровые комплектующие и аксессуары по выгодным ценам</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="filters">
+      <h2>Фильтры</h2>
+      <div class="filter-group">
+        <label for="brand">Бренд:</label>
+        <select id="brand">
+          <option value="all">Все</option>
+          <option value="asus">ASUS</option>
+          <option value="msi">MSI</option>
+          <option value="nvidia">NVIDIA</option>
+          <option value="corsair">Corsair</option>
+          <option value="logitech">Logitech</option>
+          <option value="kingston">Kingston</option>
+          <option value="sandisk">SanDisk</option>
+          <option value="cooler_master">Cooler Master</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="price">Цена:</label>
+        <select id="price">
+          <option value="all">Все</option>
+          <option value="under_50000">До 50,000 ₽</option>
+          <option value="50000_100000">50,000 ₽ - 100,000 ₽</option>
+          <option value="over_100000">Свыше 100,000 ₽</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="category">Категория:</label>
+        <select id="category">
+          <option value="all">Все</option>
+          <option value="keyboard">Клавиатуры</option>
+          <option value="mouse">Игровые мыши</option>
+          <option value="ram">Оперативная память</option>
+          <option value="flashdrive">Флешки</option>
+          <option value="cooling">Охлаждение</option>
+          <option value="laptop">Ноутбуки</option>
+          <option value="graphics_card">Графические карты</option>
+        </select>
+      </div>
+      <button class="btn" id="filterBtn">Применить фильтры</button>
+    </div>
+
+    <div class="products" id="productList">
+      <!-- Товары 1-10 -->
+      
+      <!-- Товар 1 -->
+      <a href="product.html?id=1" class="card-link">
+        <div class="card" data-brand="asus" data-price="120000" data-category="laptop">
+          <img src="https://www.notebookcheck-ru.com/fileadmin/_processed_/9/9/csm_aIEtRvLk_cca3fbaac1.jpg" alt="ASUS ROG Strix G15" class="card-img" />
+          <div class="card-content">
+            <h3>ASUS ROG Strix G15</h3>
+            <p>Игровой ноутбук с мощной графикой и отличной производительностью.</p>
+            <span class="card-price">120,000 ₽ <span class="card-old-price">140,000 ₽</span></span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      
+      <!-- Товар 2 -->
+      <a href="product.html?id=2" class="card-link">
+        <div class="card" data-brand="msi" data-price="95000" data-category="laptop">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/5415162/hat0e278c5d055011c25e74b23f46716b81/600x600" alt="MSI GF63 Thin" class="card-img" />
+          <div class="card-content">
+            <h3>MSI GF63 Thin</h3>
+            <p>Легкий и мощный игровой ноутбук.</p>
+            <span class="card-price">95,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 3 -->
+      <a href="product.html?id=3" class="card-link">
+        <div class="card" data-brand="nvidia" data-price="45000" data-category="graphics_card">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/6246197/hatfcec13adf98f6c73f2cd806799b7c306/600x600" alt="NVIDIA GeForce GTX 1660" class="card-img" />
+          <div class="card-content">
+            <h3>NVIDIA GeForce GTX 1660</h3>
+            <p>Отличная графическая карта для игр.</p>
+            <span class="card-price">45,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 4 -->
+      <a href="product.html?id=4" class="card-link">
+        <div class="card" data-brand="msi" data-price="60000" data-category="graphics_card">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/11016635/hatbc69c55d49ba2354a620cddddc0cdc08/600x600" alt="MSI GeForce RTX 3060" class="card-img" />
+          <div class="card-content">
+            <h3>MSI GeForce RTX 3060</h3>
+            <p>Высокопроизводительная графическая карта для геймеров.</p>
+            <span class="card-price">60,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 5 -->
+      <a href="product.html?id=5" class="card-link">
+        <div class="card" data-brand="corsair" data-price="15000" data-category="ram">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/14278781/hatb0b674a91574e3c63fcef0e6bb503291/600x600" alt="Corsair Vengeance RAM" class="card-img" />
+          <div class="card-content">
+            <h3>Corsair Vengeance 16GB</h3>
+            <p>Высокоскоростная оперативная память для геймеров и работы.</p>
+            <span class="card-price">15,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 6 -->
+      <a href="product.html?id=6" class="card-link">
+        <div class="card" data-brand="logitech" data-price="8000" data-category="keyboard">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/11392850/hat231257a1160885d6938e9dd90e4f3f20/600x600" alt="Logitech Gaming Keyboard" class="card-img" />
+          <div class="card-content">
+            <h3>Logitech G Gaming Keyboard</h3>
+            <p>Механическая клавиатура с подсветкой для геймеров.</p>
+            <span class="card-price">8,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 7 -->
+      <a href="product.html?id=7" class="card-link">
+        <div class="card" data-brand="kingston" data-price="2500" data-category="flashdrive">
+          <img src="https://avatars.mds.yandex.net/get-goods_pic/13920644/hate90512c93940c9ab871ccb67d1de052a/600x600" alt="Kingston USB Flash" class="card-img" />
+          <div class="card-content">
+            <h3>Kingston 64GB USB Flash</h3>
+            <p>Быстрый и надежный флеш-накопитель для хранения данных.</p>
+            <span class="card-price">2,500 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 8 -->
+      <a href="product.html?id=8" class="card-link">
+        <div class="card" data-brand="cooler_master" data-price="7000" data-category="cooling">
+          <img src="https://avatars.mds.yandex.net/i?id=c0caf056ab36ac4e906719142012d2a0_l-5434080-images-thumbs&n=13" alt="Cooler Master Cooler" class="card-img" />
+          <div class="card-content">
+            <h3>Cooler Master CPU Cooler</h3>
+            <p>Эффективное охлаждение для вашего процессора.</p>
+            <span class="card-price">7,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 9 -->
+      <a href="product.html?id=9" class="card-link">
+        <div class="card" data-brand="nvidia" data-price="150000" data-category="laptop">
+          <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_669528171107171620406b45_669529d4f6792b76aff77e90/scale_1200" alt="Gaming Laptop" class="card-img" />
+          <div class="card-content">
+            <h3>High-End Gaming Laptop</h3>
+            <p>Лучший выбор для профессиональных геймеров.</p>
+            <span class="card-price">150,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Товар 10 -->
+      <a href="product.html?id=10" class="card-link">
+        <div class="card" data-brand="corsair" data-price="20000" data-category="cooling">
+          <img src="https://avatars.mds.yandex.net/get-mpic/4409630/2a00000193b9002f80159b9e464b3f073a0c/orig" alt="Corsair Cooling System" class="card-img" />
+          <div class="card-content">
+            <h3>Corsair Liquid Cooling</h3>
+            <p>Эффективное охлаждение для вашего ПК.</p>
+            <span class="card-price">20,000 ₽</span>
+            <div class="card-buttons">
+              <button class="btn">В корзину</button>
+              <button class="btn btn-secondary">Подробнее</button>
+            </div>
+          </div>
+        </div>
+      </a>
+      <!-- Товар 11 -->
+<a href="product.html?id=11" class="card-link">
+  <div class="card" data-brand="kingston" data-price="12000" data-category="ram">
+    <img src="https://avatars.mds.yandex.net/get-mpic/4465918/img_id4021327217105997418.jpeg/orig" alt="Kingston RAM 32GB" class="card-img" />
+    <div class="card-content">
+      <h3>Kingston 32GB DDR4</h3>
+      <p>Высокоскоростная оперативная память для профессионалов.</p>
+      <span class="card-price">12,000 ₽</span>
+      <div class="card-buttons">
+        <button class="btn">В корзину</button>
+        <button class="btn btn-secondary">Подробнее</button>
+      </div>
+    </div>
+  </div>
+</a>
+
+<!-- Товар 12 -->
+<a href="product.html?id=12" class="card-link">
+  <div class="card" data-brand="nvidia" data-price="85000" data-category="graphics_card">
+    <img src="https://avatars.mds.yandex.net/get-mpic/4012413/img_id8880508987735728093.jpeg/orig" alt="NVIDIA RTX 3070" class="card-img" />
+    <div class="card-content">
+      <h3>NVIDIA GeForce RTX 3070</h3>
+      <p>Современная видеокарта для высококлассных игр и работы.</p>
+      <span class="card-price">85,000 ₽</span>
+      <div class="card-buttons">
+        <button class="btn">В корзину</button>
+        <button class="btn btn-secondary">Подробнее</button>
+      </div>
+    </div>
+  </div>
+</a>
+
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="footer-container">
+    <div class="footer-about">
+      <div class="footer-logo">Ctrl Alt Game</div>
+      <p>Интернет-магазин игровых комплектующих и аксессуаров. Мы предлагаем только качественную продукцию от ведущих мировых производителей.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-vk"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h3>Каталог</h3>
+      <ul>
+        <li><a href="#">Игровые мыши</a></li>
+        <li><a href="#">Клавиатуры</a></li>
+        <li><a href="#">Мониторы</a></li>
+        <li><a href="#">Видеокарты</a></li>
+        <li><a href="#">Процессоры</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h3>Информация</h3>
+      <ul>
+        <li><a href="#">О компании</a></li>
+        <li><a href="#">Доставка и оплата</a></li>
+        <li><a href="#">Гарантия</a></li>
+        <li><a href="#">Отзывы</a></li>
+        <li><a href="#">Контакты</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h3>Контакты</h3>
+      <p><i class="fas fa-phone-alt"></i> +7 (962) 858-83-62</p>
+      <p><i class="fas fa-envelope"></i> info@ctrlaltgame.ru</p>
+      <p><i class="fas fa-map-marker-alt"></i> Станица Ленинградская, ул. Красная, 152</p>
+      <p><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 21:00</p>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>&copy; 2025 Ctrl Alt Game. Все права защищены.</p>
+  </div>
+</footer>
+<script>
+  // Мобильное меню
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  mobileMenuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+      '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+  });
+
+  // Закрытие меню при клике на ссылку
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    });
+  });
+
+  // Фильтрация товаров
+  document.getElementById('filterBtn').addEventListener('click', function() {
+    const brandFilter = document.getElementById('brand').value;
+    const priceFilter = document.getElementById('price').value;
+    const categoryFilter = document.getElementById('category').value;
+
+    const products = document.querySelectorAll('.card');
+
+    products.forEach(product => {
+      let show = true;
+
+      // Фильтр по бренду
+      if (brandFilter !== 'all' && product.getAttribute('data-brand') !== brandFilter) {
+        show = false;
+      }
+
+      // Фильтр по цене
+      const price = parseInt(product.getAttribute('data-price'));
+      if (priceFilter === 'under_50000' && price >= 50000) {
+        show = false;
+      } else if (priceFilter === '50000_100000' && (price < 50000 || price > 100000)) {
+        show = false;
+      } else if (priceFilter === 'over_100000' && price <= 100000) {
+        show = false;
+      }
+
+      // Фильтр по категории
+      if (categoryFilter !== 'all' && product.getAttribute('data-category') !== categoryFilter) {
+        show = false;
+      }
+
+      product.style.display = show ? 'block' : 'none';
+    });
+  });
+
+  // Анимация при загрузке
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('.card');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    elements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease';
+      observer.observe(el);
+    });
+  });
+</script>
+</body>
+</html>

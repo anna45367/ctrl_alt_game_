@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Блог - Ctrl Alt Game | Магазин игровых комплектующих</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+:root {
+  --primary: #0066cc;
+  --primary-dark: #004d99;
+  --secondary: #00ff00;
+  --secondary-dark: #00cc00;
+  --dark: #121212;
+  --light: #ffffff;
+  --gray: #f5f5f5;
+  --dark-gray: #333333;
+  --accent: #ff5500;
+}
+
+/* Общие стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--gray);
+  color: var(--dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Навигация */
+.navbar {
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo i {
+  color: var(--accent);
+  font-size: 1.8rem;
+}
+
+.logo span {
+  display: none; /* Скрываем текст логотипа на мобильных */
+}
+
+.nav-links {
+  position: fixed;
+  top: 70px;
+  left: -100%;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background-color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.nav-links.active {
+  left: 0;
+}
+
+.nav-links li {
+  width: 100%;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.nav-links a {
+  color: var(--light);
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--secondary);
+}
+
+.nav-links i {
+  margin-right: 0.5rem;
+  width: 20px;
+  text-align: center;
+}
+
+.mobile-menu-btn {
+  background: none;
+  border: none;
+  color: var(--light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: block;
+}
+
+/* Десктопные стили для навигации */
+@media (min-width: 768px) {
+  .logo span {
+    display: inline; /* Показываем текст логотипа на десктопе */
+  }
+
+  .mobile-menu-btn {
+    display: none;
+  }
+
+  .nav-links {
+    position: static;
+    width: auto;
+    height: auto;
+    flex-direction: row;
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .nav-links li {
+    width: auto;
+    margin: 0 0.5rem;
+  }
+
+  .nav-links a {
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-links a:hover {
+    background-color: transparent;
+  }
+}
+
+/* Геро секция */
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+  color: var(--light);
+  padding: 3rem 1rem;
+  text-align: center;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeInUp 1s ease;
+}
+
+.hero h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки */
+.btn {
+  display: inline-block;
+  background-color: var(--accent);
+  color: var(--light);
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #ff4500;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid var(--light);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Общие разделы */
+.section {
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 1.8rem;
+  color: var(--dark);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.section-title h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--accent);
+  border-radius: 2px;
+}
+
+/* Блог карточки */
+.blog-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.blog-post {
+  background-color: var(--light);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 350px;
+}
+
+.blog-post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.blog-post-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.blog-post-content {
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.blog-post-date {
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-post-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.blog-post-excerpt {
+  color: var(--dark-gray);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.blog-post-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--dark-gray);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.blog-post-author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blog-post-author img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* О компании */
+.about-section {
+  background-color: var(--light);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.about-section h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.about-section p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: var(--dark-gray);
+  text-align: justify;
+  font-size: 0.9rem;
+}
+
+.about-section strong {
+  color: var(--primary);
+}
+
+/* Адаптивный слайдер */
+.slider-container {
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 200px;
+}
+
+.slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.slider-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+.slider-btn:hover {
+  background-color: var(--accent);
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  background-color: var(--accent);
+  transform: scale(1.2);
+}
+
+/* Футер */
+footer {
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-about p {
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--light);
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background-color: var(--accent);
+}
+
+.footer-links h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--secondary);
+}
+
+.footer-links ul {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.footer-links li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  display: block;
+  padding: 0.3rem 0;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+  color: var(--secondary);
+}
+
+.footer-contact p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.footer-contact i {
+  color: var(--secondary);
+  min-width: 20px;
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Десктопные стили */
+@media (min-width: 768px) {
+  .hero {
+    padding: 5rem 2rem;
+    min-height: 70vh;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+  }
+
+  .section {
+    padding: 3rem 2rem;
+  }
+
+  .blog-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-section {
+    padding: 2rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-section p {
+    font-size: 1rem;
+  }
+
+  .slider-container {
+    height: 400px;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .blog-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .slider-container {
+    max-width: 1000px;
+  }
+}
+</style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Ctrl Alt Game</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> <span>Блог</span></a></li>
+                    <li><a href="catalog.html"><i class="fas fa-list"></i> <span>Каталог</span></a></li>
+                    <li><a href="filters.html"><i class="fas fa-filter"></i> <span>Фильтры</span></a></li>
+                    <li><a href="delivery.html"><i class="fas fa-truck"></i> <span>Доставка</span></a></li>
+                    <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Избранное</span></a></li>
+                    <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> <span>Корзина</span></a></li>
+                    <li><a href="account.html"><i class="fas fa-user"></i> <span>Войти</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+<main>
+<section class="hero">
+<div class="hero-content">
+<h1>Блог Ctrl Alt Game</h1>
+<p>Последние новости, обзоры и советы по игровому оборудованию</p>
+</div>
+</section>
+
+<section class="section">
+<div class="about-section">
+<h2>О компании Ctrl Alt Game</h2>
+<p><strong>Ctrl Alt Game</strong> — это ваш надежный интернет-магазин техники для игровых компьютеров! Мы предлагаем широкий ассортимент высококачественного оборудования, включая игровые ПК, комплектующие, аксессуары и многое другое. Наша цель — обеспечить вас всем необходимым для создания идеального игрового пространства.</p>
+<p>В нашем магазине вы найдете продукцию от ведущих мировых производителей, таких как ASUS, MSI, NVIDIA. Мы тщательно отбираем товары, чтобы гарантировать их качество и производительность. Независимо от того, являетесь ли вы опытным геймером или только начинаете свой путь в мир игр, у нас есть все, что вам нужно.</p>
+<p>Мы стремимся предоставить нашим клиентам не только качественную продукцию, но и высокий уровень обслуживания. Наша команда экспертов готова помочь вам с выбором, ответить на все ваши вопросы и предложить индивидуальные решения, соответствующие вашим потребностям.</p>
+<p>Кроме того, мы регулярно проводим акции и распродажи, чтобы сделать ваши покупки еще более выгодными. Подписывайтесь на наш блог, чтобы быть в курсе последних новостей и обновлений в мире игровой техники!</p>
+</div>
+
+<div class="slider-container">
+<div class="slider" id="slider">
+<div class="slide">
+<img src="https://avatars.mds.yandex.net/i?id=df2ea4823464ff18763f1bbabd8beb04_l-5194967-images-thumbs&n=13" alt="Игровой компьютер 3" />
+</div>
+<div class="slide">
+<img src="https://avatars.mds.yandex.net/i?id=80e8b623033b73723e20556083e8d1c1_l-4080029-images-thumbs&n=13" alt="Игровой компьютер 4" />
+</div>
+<div class="slide">
+<img src="https://www.ixbt.com/portopc/msi/msi-gt80-2qe/photo/big/complect.jpg" alt="Игровой компьютер 5" />
+</div>
+<div class="slide">
+<img src="https://avatars.mds.yandex.net/get-mpic/4120567/img_id2709461914389332531.jpeg/orig" alt="Игровой компьютер 6" />
+</div>
+</div>
+<div class="slider-nav">
+<button class="slider-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+<button class="slider-btn" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+</div>
+<div class="slider-dots" id="sliderDots"></div>
+</div>
+
+<div class="section-title">
+<h2>Последние статьи</h2>
+</div>
+
+<div class="blog-container">
+<article class="blog-post">
+<img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Обзор клавиатуры" class="blog-post-img" />
+<div class="blog-post-content">
+<div class="blog-post-date">15 июня 2025</div>
+<h3 class="blog-post-title">Топ-5 механических клавиатур 2025 года</h3>
+<p class="blog-post-excerpt">Подробный обзор лучших механических клавиатур этого года. Мы протестировали десятки моделей и выбрали самые достойные варианты для геймеров и профессионалов.</p>
+<div class="blog-post-meta">
+<div class="blog-post-author">
+<img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Автор" />
+<span>Иван Петров</span>
+</div>
+<span>8 мин чтения</span>
+</div>
+</div>
+</article>
+<article class="blog-post">
+<img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Игровые наушники" class="blog-post-img" />
+<div class="blog-post-content">
+<div class="blog-post-date">10 июня 2025</div>
+<h3 class="blog-post-title">Как выбрать игровые наушники: полное руководство</h3>
+<p class="blog-post-excerpt">В этом руководстве мы расскажем, на что обращать внимание при выборе игровых наушников, и поможем найти идеальную модель для ваших нужд и бюджета.</p>
+<div class="blog-post-meta">
+<div class="blog-post-author">
+<img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Автор" />
+<span>Анна Смирнова</span>
+</div>
+<span>12 мин чтения</span>
+</div>
+</div>
+</article>
+<article class="blog-post">
+<img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Игровая мышь" class="blog-post-img" />
+<div class="blog-post-content">
+<div class="blog-post-date">5 июня 2025</div>
+<h3 class="blog-post-title">Обзор новейших игровых мышей 2025 года</h3>
+<p class="blog-post-excerpt">Сравнение характеристик и производительности лучших игровых мышей этого года. Мы протестировали их в различных игровых жанрах.</p>
+<div class="blog-post-meta">
+<div class="blog-post-author">
+<img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Автор" />
+<span>Алексей Иванов</span>
+</div>
+<span>10 мин чтения</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="footer-container">
+<div class="footer-about">
+<div class="footer-logo">
+<i class="fas fa-gamepad"></i>
+<span>Ctrl Alt Game</span>
+</div>
+<p>Интернет-магазин игровых комплектующих и аксессуаров. Мы предлагаем только качественную продукцию от ведущих мировых производителей.</p>
+<div class="social-links">
+<a href="#" aria-label="ВКонтакте"><i class="fab fa-vk"></i></a>
+<a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+<a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+</div>
+</div>
+<div class="footer-links">
+<h3>Каталог</h3>
+<ul>
+<li><a href="#">Игровые мыши</a></li>
+<li><a href="#">Клавиатуры</a></li>
+<li><a href="#">Мониторы</a></li>
+<li><a href="#">Видеокарты</a></li>
+<li><a href="#">Процессоры</a></li>
+</ul>
+</div>
+<div class="footer-links">
+<h3>Информация</h3>
+<ul>
+<li><a href="#">О компании</a></li>
+<li><a href="#">Доставка и оплата</a></li>
+<li><a href="#">Гарантия</a></li>
+<li><a href="#">Отзывы</a></li>
+<li><a href="#">Контакты</a></li>
+</ul>
+</div>
+<div class="footer-contact">
+<h3>Контакты</h3>
+<p><i class="fas fa-phone-alt"></i> +7 (962) 858-83-62</p>
+<p><i class="fas fa-envelope"></i> info@ctrlaltgame.ru</p>
+<p><i class="fas fa-map-marker-alt"></i> Станица Ленинградская, ул. Красная, 152</p>
+<p><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 21:00</p>
+</div>
+</div>
+<div class="copyright">
+<p>&copy; 2025 Ctrl Alt Game. Все права защищены.</p>
+</div>
+</footer>
+
+<script>
+  // Мобильное меню
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  mobileMenuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ?
+      '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+  });
+
+  // Закрытие меню при клике на ссылку
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    });
+  });
+
+  // Плавная прокрутка
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Адаптивный слайдер
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const slider = document.getElementById('slider');
+  const sliderDots = document.getElementById('sliderDots');
+
+  // Создаем точки навигации
+  function createDots() {
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('slider-dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(index));
+      sliderDots.appendChild(dot);
+    });
+  }
+
+  // Обновляем активную точку
+  function updateDots() {
+    const dots = document.querySelectorAll('.slider-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentSlide);
+    });
+  }
+
+  // Переход к конкретному слайду
+  function goToSlide(index) {
+    currentSlide = index;
+    updateSliderPosition();
+    updateDots();
+    resetAutoSlide();
+  }
+
+  // Обновляем позицию слайдера
+  function updateSliderPosition() {
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  }
+
+  // Следующий слайд
+  function nextSlide() {
+    if (currentSlide === totalSlides - 1) {
+      currentSlide = 0;
+    } else {
+      currentSlide++;
+    }
+    updateSliderPosition();
+    updateDots();
+    resetAutoSlide();
+  }
+
+  // Предыдущий слайд
+  function prevSlide() {
+    if (currentSlide === 0) {
+      currentSlide = totalSlides - 1;
+    } else {
+      currentSlide--;
+    }
+    updateSliderPosition();
+    updateDots();
+    resetAutoSlide();
+  }
+
+  // Автоматическая смена слайдов
+  let autoSlideInterval;
+
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+
+  // Инициализация
+  createDots();
+  startAutoSlide();
+
+  // Остановка автослайда при наведении
+  slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+  slider.addEventListener('mouseleave', startAutoSlide);
+
+  // Анимация появления элементов
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('.blog-post, .section-title, .about-section');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    elements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease';
+      observer.observe(el);
+    });
+  });
+</script>
+</body>
+</html>
